@@ -11,6 +11,11 @@ public class PlayerController : MonoBehaviour {
 	private float movLerp;
 	public float airControl;
 
+	public bool isJumping;
+	public float hoverFactor;
+	public float hoverDecay;
+	private float lastVelY;
+
 	private Rigidbody2D rb;
 	private bool isGrounded = false;
 
@@ -21,42 +26,71 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		//Movement
+
 		float xinput = Input.GetAxisRaw ("Horizontal");	
 
 		if (isGrounded || xinput != 0)
 			rb.velocity = Vector2.Lerp (rb.velocity, new Vector2 (xinput * speed, rb.velocity.y), movLerp);
+
+		//Jump
 
 		if (isGrounded) 
 		{
 			if (Input.GetButtonDown ("Jump")) 
 			{
 				rb.AddForce (transform.up * jumpForce, ForceMode2D.Impulse);
+				isJumping = true;
 			}
 
 			movLerp = 1f;
-		}
+		} 
 
-		else
+		else 
 		{
 			movLerp = airControl;
 		}
-			
+
+		//Hovering before falling
+
+		if (!isGrounded && !isJumping)
+		{
+			if (rb.velocity.y <= 0 && lastVelY >= 0) 
+			{
+				rb.gravityScale = hoverFactor;
+			}
+
+			if (rb.gravityScale < 1)
+				rb.gravityScale += hoverDecay;
+				
+			if (rb.gravityScale > 1)
+				rb.gravityScale = 1;
+
+			lastVelY = rb.velocity.y;
+		}
+
+		//Max speed
+
 		rb.velocity = Vector2.ClampMagnitude (rb.velocity, maxVelocity);
 	}
 
+	//isGrounded = true;
 	void OnTriggerEnter2D (Collider2D col)
 	{
 		if (col.tag == "Floor") 
 		{
 			isGrounded = true;
+			rb.gravityScale = 1;
+			isJumping = false;
 		}
-	}		// isGrounded = true;
+	}		
 
+	//isGrounded = false;
 	void OnTriggerExit2D (Collider2D col)
 	{
 		if (col.tag == "Floor") 
 		{
 			isGrounded = false;
 		}
-	} 	//isGrounded = false;
+	} 	
 }

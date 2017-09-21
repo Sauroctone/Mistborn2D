@@ -19,9 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4591643490941668}
-  - component: {fileID: 70570717311822100}
   - component: {fileID: 50502663585079164}
+  - component: {fileID: 70570717311822100}
   - component: {fileID: 58661353371456054}
+  - component: {fileID: 61573506179089018}
   - component: {fileID: 114948257358372846}
   - component: {fileID: 114056227249794764}
   m_Layer: 0
@@ -136,9 +137,34 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.21}
+  m_Offset: {x: 0, y: -0.19}
   serializedVersion: 2
   m_Radius: 0.08
+--- !u!61 &61573506179089018
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1096513003279582}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!70 &70570717311822100
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
@@ -178,10 +204,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d918b29d4de6d4b948bb30bb37cd49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 3
+  speed: 3
+  jumpForce: 3.5
   maxVelocity: 15
   airControl: 0.1
+  isJumping: 0
+  hoverFactor: 0.2
+  hoverDecay: 0.02
 --- !u!212 &212494410407819098
 SpriteRenderer:
   m_ObjectHideFlags: 1
