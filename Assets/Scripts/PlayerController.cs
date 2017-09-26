@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
 	private float lastXInput;
 	public float speed = 5f;
 	public float jumpForce = 3f;
+	public float jumpBuffer = 0.1f;
+	public bool wantsToJump;
 	public float maxVelocity;
 	private float movLerp;
 	public float airControl;
@@ -24,6 +26,14 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 	}
 
+	void Update()
+	{
+		if (Input.GetButtonDown ("Jump")) 
+		{
+			StartCoroutine ("JumpInputBuffering");
+		}
+	}
+
 	void FixedUpdate()
 	{
 		//Movement
@@ -37,7 +47,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (isGrounded) 
 		{
-			if (Input.GetButtonDown ("Jump")) 
+			if (wantsToJump) 
 			{
 				rb.AddForce (transform.up * jumpForce, ForceMode2D.Impulse);
 				isJumping = true;
@@ -72,6 +82,13 @@ public class PlayerController : MonoBehaviour {
 		//Max speed
 
 		rb.velocity = Vector2.ClampMagnitude (rb.velocity, maxVelocity);
+	}
+
+	IEnumerator JumpInputBuffering ()
+	{
+		wantsToJump = true;
+		yield return new WaitForSeconds (jumpBuffer);
+		wantsToJump = false;
 	}
 
 	//isGrounded = true;
